@@ -67,14 +67,14 @@ export default function Navbar() {
           isOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-4 py-2 space-y-2">
-          <NavLink to="/" className={navLinkClass}>
+        <div className="px-4 py-2 space-y-2 flex flex-col w-fit">
+          <NavLink onClick={()=> setIsOpen(false)} to="/" className={navLinkClass}>
             All Books
           </NavLink>
-          <NavLink to="/add-book" className={navLinkClass}>
+          <NavLink onClick={()=> setIsOpen(false)} to="/add-book" className={navLinkClass}>
             Add Book
           </NavLink>
-          <NavLink to="/borrow-summary" className={navLinkClass}>
+          <NavLink onClick={()=> setIsOpen(false)} to="/borrow-summary" className={navLinkClass}>
             Borrow Summary
           </NavLink>
         </div>

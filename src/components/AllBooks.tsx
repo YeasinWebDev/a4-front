@@ -7,7 +7,7 @@ import type { IBook } from "../types";
 function AllBooks() {
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, isError } = useBooksQuery({ page });
+  const { data, isLoading, isError,refetch } = useBooksQuery({ page });
 
 
   if (isLoading)
@@ -22,15 +22,15 @@ function AllBooks() {
     <div className="flex flex-col items-center justify-center mt-10">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-10">
         {data?.data?.books?.map((book:IBook, index:number) => (
-          <BookCard key={index} book={book} />
+          <BookCard key={index} book={book} refetch={refetch} />
         ))}
       </div>
 
-      <div className="flex justify-center gap-4 mt-6 items-center mb-10 lg:mb-0">
+      <div className="flex justify-center gap-4 mt-6 items-center mb-10 lg:mb-0 cursor-pointer">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
         >
           Previous
         </button>
@@ -38,7 +38,7 @@ function AllBooks() {
         <button
           onClick={() => setPage((prev) => prev + 1)}
           disabled={data?.data?.totalPage === page}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
         >
           Next
         </button>

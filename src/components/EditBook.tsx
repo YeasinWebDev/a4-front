@@ -1,9 +1,20 @@
-import React, { useState } from "react";
-import { useBooksQuery, useCreateBookMutation } from "../redux/features/book/bookApiSlice";
+import React, { useEffect, useState } from "react";
+import {
+  useSingleBookQuery,
+  useUpdateBookMutation,
+} from "../redux/features/book/bookApiSlice";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
-function AddBooks() {
+function EditBook({
+  bookId,
+  setIsEditDailogOpen,
+}: {
+  bookId: string;
+  setIsEditDailogOpen: any;
+}) {
+  const { data } = useSingleBookQuery(bookId);
+  const [updateBook, { isLoading: isUpdating }] = useUpdateBookMutation();
+
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -14,8 +25,11 @@ function AddBooks() {
     available: true,
   });
 
-  const [createBook, { isLoading }] = useCreateBookMutation();
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (data) {
+      setFormData(data?.data);
+    }
+  }, [data]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -27,20 +41,30 @@ function AddBooks() {
     }));
   };
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    let res = await createBook(formData).unwrap()
-    if(res.success === true){
-      toast.success("Book Added Successfully")
-      navigate('/')
+    let ans = await updateBook(formData).unwrap();
+    if (ans.success === true) {
+      toast.success("Book Updated Successfully");
+      setIsEditDailogOpen(false);
+      setFormData(
+        {
+          title: "",
+          author: "",
+          genre: "",
+          isbn: "",
+          description: "",
+          copies: "",
+          available: true,
+        }
+      )
     }
   };
 
   return (
     <div>
-      <h3 className="text-2xl font-bold mb-4 flex items-center justify-center mt-10 text-green-700">
-        Add Book
+      <h3 className="text-2xl font-bold mb-4 flex items-center justify-center text-green-700">
+        Edit Book
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto p-4 ">
         <input
@@ -50,7 +74,7 @@ function AddBooks() {
           onChange={handleChange}
           placeholder="Title"
           required
-          className="w-full p-2 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-2 border rounded border-green-700"
         />
         <input
           type="text"
@@ -59,7 +83,7 @@ function AddBooks() {
           onChange={handleChange}
           placeholder="Author"
           required
-          className="w-full p-2 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-2 border rounded border-green-700"
         />
         <input
           type="text"
@@ -68,7 +92,7 @@ function AddBooks() {
           onChange={handleChange}
           placeholder="Genre"
           required
-          className="w-full p-2 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-2 border rounded border-green-700"
         />
         <input
           type="text"
@@ -77,7 +101,7 @@ function AddBooks() {
           onChange={handleChange}
           placeholder="ISBN"
           required
-          className="w-full p-2 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-2 border rounded border-green-700"
         />
         <textarea
           name="description"
@@ -85,7 +109,7 @@ function AddBooks() {
           onChange={handleChange}
           placeholder="Description"
           required
-          className="w-full p-2 border rounded border-gray-300 resize-none h-20 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-2 border rounded border-green-700 resize-none h-20"
         ></textarea>
         <input
           type="number"
@@ -94,11 +118,11 @@ function AddBooks() {
           onChange={handleChange}
           placeholder="Copies"
           required
-          className="w-full p-2 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-2 border rounded border-green-700"
         />
         <div className="w-full">
           <button
-            disabled={isLoading}
+            disabled={isUpdating}
             type="submit"
             className="bg-green-700 cursor-pointer hover:bg-green-800 text-white px-4 py-2 rounded w-28 flex items-center justify-center mx-auto"
           >
@@ -110,4 +134,4 @@ function AddBooks() {
   );
 }
 
-export default AddBooks;
+export default EditBook;
