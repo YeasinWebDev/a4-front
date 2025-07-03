@@ -9,7 +9,6 @@ function AllBooks() {
 
   const { data, isLoading, isError } = useBooksQuery({ page });
 
-  console.log(data);
 
   if (isLoading)
     return (
@@ -20,14 +19,14 @@ function AllBooks() {
   if (isError) return <p>Something went wrong</p>;
 
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+    <div className="flex flex-col items-center justify-center mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-10">
         {data?.data?.books?.map((book:IBook, index:number) => (
           <BookCard key={index} book={book} />
         ))}
       </div>
 
-      <div className="flex justify-center gap-4 mt-6 items-center">
+      <div className="flex justify-center gap-4 mt-6 items-center mb-10 lg:mb-0">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}

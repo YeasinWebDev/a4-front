@@ -1,9 +1,116 @@
-import React from 'react'
+import React, { useState } from "react";
+import { useBooksQuery, useCreateBookMutation } from "../redux/features/book/bookApiSlice";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function AddBooks() {
+  const [formData, setFormData] = useState({
+    title: "",
+    author: "",
+    genre: "",
+    isbn: "",
+    description: "",
+    copies: "",
+    available: true,
+  });
+
+  const [createBook, { isLoading }] = useCreateBookMutation();
+  const {refetch} = useBooksQuery({ page: 1 });
+  const navigate = useNavigate();
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async(e: React.FormEvent) => {
+    e.preventDefault();
+
+    let res = await createBook(formData).unwrap()
+    if(res.success === true){
+      refetch()
+      toast.success("Book Added Successfully")
+      navigate('/')
+    }
+    console.log(res)
+  };
+
   return (
-    <div>AddBooks</div>
-  )
+    <div>
+      <h3 className="text-2xl font-bold mb-4 flex items-center justify-center mt-10 text-green-700">
+        Add Book
+      </h3>
+      <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto p-4 ">
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="Title"
+          required
+          className="w-full p-2 border rounded border-green-700"
+        />
+        <input
+          type="text"
+          name="author"
+          value={formData.author}
+          onChange={handleChange}
+          placeholder="Author"
+          required
+          className="w-full p-2 border rounded border-green-700"
+        />
+        <input
+          type="text"
+          name="genre"
+          value={formData.genre}
+          onChange={handleChange}
+          placeholder="Genre"
+          required
+          className="w-full p-2 border rounded border-green-700"
+        />
+        <input
+          type="text"
+          name="isbn"
+          value={formData.isbn}
+          onChange={handleChange}
+          placeholder="ISBN"
+          required
+          className="w-full p-2 border rounded border-green-700"
+        />
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          placeholder="Description"
+          required
+          className="w-full p-2 border rounded border-green-700 resize-none h-20"
+        ></textarea>
+        <input
+          type="number"
+          name="copies"
+          value={formData.copies}
+          onChange={handleChange}
+          placeholder="Copies"
+          required
+          className="w-full p-2 border rounded border-green-700"
+        />
+        <div className="w-full">
+          <button
+            disabled={isLoading}
+            type="submit"
+            className="bg-green-700 cursor-pointer hover:bg-green-800 text-white px-4 py-2 rounded w-28 flex items-center justify-center mx-auto"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }
 
-export default AddBooks
+export default AddBooks;

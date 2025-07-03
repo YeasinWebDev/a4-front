@@ -17,7 +17,7 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex space-x-4">
-            <NavLink to="/all-books" className={navLinkClass}>
+            <NavLink to="/" className={navLinkClass}>
               All Books
             </NavLink>
             <NavLink to="/add-book" className={navLinkClass}>
@@ -68,7 +68,7 @@ export default function Navbar() {
         }`}
       >
         <div className="px-4 py-2 space-y-2">
-          <NavLink to="/all-books" className={navLinkClass}>
+          <NavLink to="/" className={navLinkClass}>
             All Books
           </NavLink>
           <NavLink to="/add-book" className={navLinkClass}>

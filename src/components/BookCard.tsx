@@ -1,7 +1,9 @@
 import { MdOutlineEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaBookOpen } from "react-icons/fa6";
-export function BookCard({ book, onEdit, onDelete, onBorrow }:any) {
+import { useBooksQuery, useDeleteBookMutation } from "../redux/features/book/bookApiSlice";
+import toast from "react-hot-toast";
+export function BookCard({ book}:any) {
   const {
     title,
     author,
@@ -11,8 +13,20 @@ export function BookCard({ book, onEdit, onDelete, onBorrow }:any) {
     available,
   } = book;
 
+  const [onDeleteBook]=useDeleteBookMutation();
+  const {refetch} = useBooksQuery({page:1});
+
+  const onDelete = async() => {
+    let res= await onDeleteBook(book._id);
+   if(res.data.success === true){
+    toast.success("Book Deleted Successfully")
+    refetch()
+   }
+  };
+  const onEdit = () => {};
+
   return (
-    <div className="bg-white shadow-md rounded-xl p-4 space-y-2 border">
+    <div className="bg-white shadow-xl  rounded-xl p-4 space-y-2 w-[22rem] lg:w-[20rem] xl:w-[25rem]">
       <div className="flex justify-between items-start">
         <h2 className="text-lg font-bold">{title}</h2>
         <span className={`text-sm px-2 py-1 rounded-full ${available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -30,29 +44,26 @@ export function BookCard({ book, onEdit, onDelete, onBorrow }:any) {
       <div className="flex gap-3 pt-3">
         <button
           onClick={() => onEdit(book)}
-          className="flex items-center gap-1 px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="cursor-pointer flex items-center gap-1 px-2 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
         >
           <MdOutlineEdit size={16} />
-          Edit
         </button>
         <button
           onClick={() => onDelete(book)}
-          className="flex items-center gap-1 px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+          className="cursor-pointer flex items-center gap-1 px-2 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
         >
           <MdDelete size={16} />
-          Delete
         </button>
         <button
           onClick={() => onBorrow(book)}
           disabled={!available}
-          className={`flex items-center gap-1 px-3 py-1 text-sm rounded ${
+          className={`cursor-pointer flex items-center gap-1 px-2 py-1 text-sm rounded ${
             available
               ? 'bg-green-600 text-white hover:bg-green-700'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
           <FaBookOpen size={16} />
-          Borrow
         </button>
       </div>
     </div>
