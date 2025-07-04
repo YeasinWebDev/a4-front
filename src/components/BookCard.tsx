@@ -21,7 +21,7 @@ export function BookCard({ book, refetch }: any) {
       refetch();
     }
   };
-  const onEdit = (book: any) => {
+  const onEdit = () => {
     setIsEditDailogOpen(true);
   };
   const onBorrow = () => {
@@ -60,7 +60,7 @@ export function BookCard({ book, refetch }: any) {
 
       <div className="flex gap-3 pt-3">
         <button
-          onClick={() => onEdit(book)}
+          onClick={() => onEdit()}
           className="cursor-pointer flex items-center gap-1 px-2 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
         >
           <MdOutlineEdit size={16} />

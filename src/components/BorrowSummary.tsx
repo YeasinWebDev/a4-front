@@ -17,7 +17,7 @@ function BorrowSummary() {
         Borrow Summary
       </h3>
 
-      <div className="w-full overflow-x-auto">
+      {bookBorrow?.data.length > 0 ? <div className="w-full overflow-x-auto">
         <table className="min-w-[600px] w-full border border-gray-300 text-sm md:text-base">
           <thead>
             <tr className="bg-gray-100">
@@ -42,7 +42,7 @@ function BorrowSummary() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> : <h3 className="text-2xl font-bold mb-4 mt-10 text-green-700">No Book Borrowed</h3>}
     </div>
   );
 }

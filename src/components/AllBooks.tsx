@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BookCard } from "./BookCard";
 import { useBooksQuery } from "../redux/features/book/bookApiSlice";
 import Loader from "./Loader";
