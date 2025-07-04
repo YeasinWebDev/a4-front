@@ -1,69 +1,74 @@
-# React + TypeScript + Vite
+# 📚 Minimal Library Management System - [Frontend](https://a4-front-teal.vercel.app) | [Backend](https://github.com/YeasinWebDev/a4-back) 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean and functional library management system built with **React**, **Redux Toolkit Query (RTK Query)**, and **TypeScript**. This minimal system allows users to manage books and borrow them, with a simple UI and real-time API interaction — **no authentication, no filters, no payment integration**.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. Public Routes
+- All pages are accessible without login.
+- Focused only on essential library operations (CRUD + Borrow + Summary).
 
-## Expanding the ESLint configuration
+### 2. Book Management 🛠️
+- **Book List grid**:  
+  View all books with fildes:  
+  `Title | Author | Genre | ISBN | Copies | Availability | Actions`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Actions Include**:
+  - 📝 **Edit Book**:  
+    - Opens a pre-filled form.
+    - Updates book via API.
+    - Business logic: If `copies` is set to 0 → book is marked unavailable.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  - ❌ **Delete Book**:  
+    - Prompts a confirmation dialog.
+    - On confirm, deletes book and updates UI.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+  - 📦 **Borrow Book**:  
+    - Opens a borrow form with `Quantity` and `Due Date`.
+    - Quantity must be ≤ available copies.
+    - If quantity reaches 0 → book becomes unavailable.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Add New Book**:
+  - Button opens a form to add a new book.
+  - Fields: `Title`, `Author`, `Genre`, `ISBN`, `Description`, `Copies`, `Available (optional)`
+  - Auto-redirects to book list and refreshes UI.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 3. Borrow Functionality
+- Borrow a book from the book list.
+- Fields: `Quantity`, `Due Date`
+- On successful borrow:
+  - Book's copies are updated.
+  - Redirects to **Borrow Summary**.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+### 4. 📈 Borrow Summary
+- Displays total borrowed quantity for each book.
+- Columns: `Book Title | ISBN | Total Quantity Borrowed`
+- Data fetched from backend aggregation endpoint.
+
+---
+
+## 🧩 Tech Stack
+
+| Tech | Description |
+|------|-------------|
+| **React** | UI Library |
+| **TypeScript** | Static typing |
+| **Redux Toolkit + RTK Query** | State & data fetching |
+| **Tailwind CSS** | Styling |
+| **Custom form logic** | Form handling |
+| **Vite** | Development server & build tool |
+
+---
+
+
+## 📧 Contact
+If you have any questions or suggestions, feel free to reach out!
+
+* Portfolio : [Yeasin Arafat](https://yeasin-arafat-portfolio.netlify.app)
+* LinkedIn: [Yeasin Arafat](https://www.linkedin.com/in/yeasinarafat121)
+
+
